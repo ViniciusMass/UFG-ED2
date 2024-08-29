@@ -8,7 +8,7 @@ ou
 */
 
 #include <stdio.h>
-#define MAX_SIZE 10
+#define MAX_SIZE 3
 
 int lista[MAX_SIZE];
 int tamanho = 0;
@@ -40,10 +40,25 @@ void imprimir() {
     printf("\n");
 }
 
+void buscar(int elemento) {
+    int aux = 0;
+    for (int i = 0; i < tamanho; i++) {
+        if (elemento == lista[i]){
+            printf("Posição %d.\n", i);
+            aux++;
+        }
+    }
+    if (aux == 0) {
+        printf("Não existe esse elemento na lista.\n");
+    }
+}
+
 int main() {
     inserir(10);
     inserir(20);
     inserir(30);
+    buscar(10);
+    buscar(15);
     imprimir();
     remover(1);
     imprimir();
