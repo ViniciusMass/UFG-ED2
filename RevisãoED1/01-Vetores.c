@@ -9,8 +9,9 @@ O código abaixo realiza a impressão do vetor na ordem inversa.
 int main() {
     int n, i, temp; // Definição das variáveis
     
-    printf("Tamanho do vetor: \n"); 
+    printf("Tamanho do vetor: "); 
     scanf("%d", &n); // Recebe o tamanho 'n' do vetor
+    printf("\n");
     int vetor[n];
     
     for (i = 0; i < n; i++) { // Declara os valores do vetor, onde: vetor[n] = {0, 1, 2, 3 ... n}
