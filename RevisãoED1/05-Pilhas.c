@@ -7,20 +7,30 @@ O código abaixo apresenta a implementação de uma pilha e suas operações bá
 */
 
 #include <stdio.h>
-#define MAX_SIZE 3
+#include <stdlib.h>
+#define SIZE 3
 
-int pilha[MAX_SIZE];
+int *pilha;
 int topo = -1;
+int tamanho = SIZE;
 
-void push(int elemento) {
-    if (topo < MAX_SIZE - 1) {
-        pilha[++topo] = elemento;
-    } else {
-        printf("Pilha cheia!\n");
+void aumentar(){ // Aumenta o tamanho da pilha
+    tamanho++; 
+    pilha = (int*)realloc(pilha, tamanho * sizeof(int)); // Realoca o novo tamanho
+    if (pilha == NULL) { // Se falhar, encerra o programa
+        printf("Erro ao expandir a pilha.\n");
+        exit(1);
     }
 }
 
-int pop() {
+void push(int elemento) { // Adiciona um elemento ao topo da pilha
+    if (topo >= SIZE - 1) {
+        aumentar();
+    }
+    pilha[++topo] = elemento;
+}
+
+int pop() { // Retira o elemento do topo ta pilha
     if (topo == -1) {
         printf("Pilha vazia!\n");
         return -1;
@@ -29,7 +39,7 @@ int pop() {
     }
 }
 
-int top() {
+int top() { // Indica qual o elemento localizado no topo da pilha.
     if (topo == -1) {
         printf("Pilha vazia!\n");
         return -1;
@@ -38,7 +48,7 @@ int top() {
     }
 }
 
-void imprimir() {
+void imprimir() { // Imprime todos os valores da pilha, de cima pra baixo
     printf("Conteúdo da pilha:\n");
     for (int i = topo; i >= 0; i--) {
         printf("%d ", pilha[i]);
@@ -46,10 +56,29 @@ void imprimir() {
     printf("\n");
 }
 
+void verificarVazia() { // Verifica se a pilha está ou não vazia
+    if (topo == -1) {
+        printf("Pilha vazia!\n");
+    }
+    else {
+        printf("A pilha não está vazia!\n");
+    }
+}
+
 int main() {
+    pilha = (int*)malloc(SIZE * sizeof(int)); // Inicialização da pilha
+    if (pilha == NULL) { // Encerra o programa se a alocação falhar
+        printf("Erro ao inicializar pilha\n");
+        return 1;
+    }
+    
+    verificarVazia();
     push(10);
     push(20);
     push(30);
+    push(40);
+    push(50);
+    verificarVazia();
     imprimir();
     printf("Elemento no topo: %d\n", top());
     printf("Elemento removido: %d\n", pop());
