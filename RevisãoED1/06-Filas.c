@@ -9,17 +9,18 @@ O código abaixo apresenta a implementação de uma fila e suas operações bás
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node {
+typedef struct Node { // Declaração dos nós
     int data;
     struct Node* next;
 } Node;
 
-typedef struct Queue {
+typedef struct Queue { // Declaração da fila
     Node* front;
     Node* rear;
+    int tamanho;
 } Queue;
 
-Queue* createQueue() {
+Queue* createQueue() { // Cria a fila (inicializa)
     Queue* q = (Queue*)malloc(sizeof(Queue));
     if (q == NULL) {
         printf("Falha na alocação de memória para a fila.\n");
@@ -29,7 +30,7 @@ Queue* createQueue() {
     return q;
 }
 
-void enqueue(Queue* q, int value) {
+void enqueue(Queue* q, int value) { // Enfileira um novo valor na fila
     Node* newNode = (Node*)malloc(sizeof(Node));
     if (newNode == NULL) {
         printf("Falha na alocação de memória para o novo nó.\n");
@@ -43,9 +44,10 @@ void enqueue(Queue* q, int value) {
         q->rear->next = newNode;
         q->rear = newNode;
     }
+    q->tamanho++;
 }
 
-int dequeue(Queue* q) {
+int dequeue(Queue* q) { // Desenfileira um valor da fila
     if (q->front == NULL) { 
         printf("Fila está vazia.\n");
         return -1;
@@ -57,14 +59,15 @@ int dequeue(Queue* q) {
         q->rear = NULL;
     }
     free(temp);
+    q->tamanho--;
     return data;
 }
 
-int isEmpty(Queue* q) {
+int isEmpty(Queue* q) { // Confere se a fila está vazia
     return q->front == NULL;
 }
 
-void printQueue(Queue* q) {
+void printQueue(Queue* q) { // Imprime todos os valores da fila
     if (isEmpty(q)) {
         printf("A fila está vazia.\n");
         return;
@@ -78,11 +81,23 @@ void printQueue(Queue* q) {
     printf("\n");
 }
 
+void numElementos(Queue* q) { // Imprime a quantidade de elementos da fila
+    printf("A fila tem %d elementos.\n", q->tamanho);
+}
+
+void limparFila(Queue* q) { // Remove e libera a memória dos nós
+    while (!isEmpty(q)) {
+        dequeue(q); 
+    }
+    printf("Memória liberada com sucesso.\n");
+}
+
 int main() {
     Queue* q = createQueue();
     enqueue(q, 10);
     enqueue(q, 20);
     enqueue(q, 30);
+    numElementos(q);
     printQueue(q);
 
     printf("Desenfileirado: %d\n", dequeue(q));
@@ -91,6 +106,7 @@ int main() {
     printQueue(q);
     printf("Desenfileirado: %d\n", dequeue(q));
     printQueue(q);
+    limparFila(q);
 
     return 0;
 }
